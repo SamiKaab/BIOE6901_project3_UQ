@@ -88,4 +88,7 @@ auto br0
 iface br0 inet manual
 bridge_ports eth2 eth1 eth0
 ```
+Finally run `sudo systemctl restart dhcpcd.service` in order for the changes to take effect.
+**Note that  we have to run `sudo brctl addif br0 eth0 eth1 eth2` every time we reboot the Raspberry Pis
+
 We should now be able to simultaneously ping RPi1 and RPi2 from RPi0
