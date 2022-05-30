@@ -1,12 +1,37 @@
 # BIOE6901_project3_UQ
-photogrammetry project
+Photogrammetry project
 
-## Requirements
-* Raspberry Pi 4B (and required power supply)
+## Required Equipment
+* Raspberry Pi 4B (at least 2 and their required power supply)
 * Ethernet cable (at least 2)
 * Usb to ethernet adaptor (at least 2)
+### Optional
+* External monitor and display cable (at least one)
+* Mouse and keyboard (at least one)
+* Ximea camera (Used in this example, max 6)
 
 ## Setup
+If the Raspberry Pi is connected to an external monitor, connect it the internet via wifi and run 
+```sh
+sudo apt update
+sudo apt-get upgrade
+sudo apt install build-essential
+```
+If your accessing the Raspberry Pi via ssh, you will have to add the following to `/etc/wpa_supplicant/wpa_supplicant.conf`: 
+```sh
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+```
+```sh
+network={
+   ssid="wifi_name"
+   psk="password"
+}
+```
+You may have to reboot the Raspberry Pi
+Once you are connected to the internet run the previously specified command before continuing.
+
+Python should come pre-installed, you can check using the `which python` or `which python3`, which sould return the location of the program (probably `/usr/bin/`). If it is not installed, install it with : `sudo apt-get install python3.8`
+
 ### Python dependencies and Ximea camera setup
 
 Install the following dependencies
@@ -24,6 +49,8 @@ You may also have to  install the following if you get a cv2 related error:
   sudo apt-get install libqtgui4 
   sudo apt-get install libqt4-test
   ```
+**Note some of the above dependencies may fail to install, simply continue with the rest of the set up**
+
 Run the following commands **only if you are using the ximea cameras**:
   ```sh
   wget https://www.ximea.com/downloads/recent/XIMEA_Linux_SP.tgz
@@ -92,3 +119,6 @@ Finally run `sudo systemctl restart dhcpcd.service` in order for the changes to 
 **Note that  we have to run `sudo brctl addif br0 eth0 eth1 eth2` every time we reboot the Raspberry Pis
 
 We should now be able to simultaneously ping RPi1 and RPi2 from RPi0
+
+## Running the program
+The [cam.py](cam.py) should be added to and ran on all Raspberry Pis. The [simpleServer.py](simpleServer.py) should only be added to the main controlling Raspberry Pi (RPi0) while the [simpleclient.py](simpleclient.py) should be put in the secondary Raspberry Pis (RP1 and RP2).
