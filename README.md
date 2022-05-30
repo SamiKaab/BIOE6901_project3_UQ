@@ -2,9 +2,9 @@
 photogrammetry project
 
 ## Requirements
-* Raspberry Pi 4B
-* Ethernet cable
-* usb to ethernet adaptor
+* Raspberry Pi 4B (and required power supply)
+* Ethernet cable (at least 2)
+* Usb to ethernet adaptor (at least 2)
 
 ## Setup
 
