@@ -17,7 +17,7 @@ def setupServer():
     print("Socket bind comlete.")
     return s
 
-def setupConnection():
+def setupConnection(s):
     s.listen(True) # Allows one connection at a time.
     conn, address = s.accept()
     print("Connected to: " + address[0] + ":" + str(address[1]))
@@ -43,16 +43,16 @@ def getImage(conn):
         decimg = cv.imdecode(data, 1)
         # cv.imshow("image", decimg)
         print("done")
-        cv.imwrite("images/{}.png".format(fileName.decode('utf-8').split(' ')[0]), decimg)
+        cv.imwrite("images/{}".format(fileName.decode('utf-8').split(' ')[0]), decimg)
         return 1
     else:
         return 0
 
-
-s = setupServer()
-conn = setupConnection()
-while True:
-    if not getImage(conn):
-        break
-    
-s.close()
+if __name__ == "__main__":
+    s = setupServer()
+    conn = setupConnection(s)
+    while True:
+        if not getImage(conn):
+            break
+        
+    s.close()
