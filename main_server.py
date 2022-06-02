@@ -1,4 +1,12 @@
-# from asyncio.windows_events import NULL
+__author__ = "Sami Kaab, JiaWei Li"
+#__copyright__ = ""
+#__credits__ = [""]
+#__license__ = "GPL"
+__version__ = "1.2"
+#__maintainer__ = ""
+__email__ = "sami.kaab@outlook.com"
+__status__ = "In Development"
+
 import cam
 import simpleServer
 import simpleClient

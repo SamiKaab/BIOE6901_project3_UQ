@@ -1,12 +1,19 @@
+__author__ = "Sami Kaab"
+#__copyright__ = ""
+#__credits__ = [""]
+#__license__ = "GPL"
+__version__ = "1.2"
+#__maintainer__ = ""
+__email__ = "sami.kaab@outlook.com"
+__status__ = "In Development"
+
 import base64
 import socket
 from time import sleep
 from time import time
 import cv2 as cv
 import numpy as np
-# cv.imshow("test", pic)
-#     cv.waitKey(0)
-#     cv.destroyAllWindows()
+
 
 host = '192.168.0.4'
 port = 5560
