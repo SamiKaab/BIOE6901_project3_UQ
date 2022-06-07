@@ -1,5 +1,20 @@
+
 # BIOE6901_project3_UQ
-Photogrammetry project
+3D Photogrammetry Facial Scanner project
+
+**Author**: Sami Kaab
+#
+
+## Table of Content
+- [BIOE6901_project3_UQ](#bioe6901_project3_uq)
+  - [Table of Content](#table-of-content)
+  - [Required Equipment](#required-equipment)
+    - [Optional](#optional)
+  - [Setup](#setup)
+    - [Python dependencies and Ximea camera setup](#python-dependencies-and-ximea-camera-setup)
+    - [Communication between raspberry pis](#communication-between-raspberry-pis)
+  - [Running the program](#running-the-program)
+    
 
 ## Required Equipment
 * Raspberry Pi 4B (at least 2 and their required power supply)
@@ -121,4 +136,7 @@ Finally run `sudo systemctl restart dhcpcd.service` in order for the changes to 
 We should now be able to simultaneously ping RPi1 and RPi2 from RPi0
 
 ## Running the program
-The [cam.py](cam.py) should be added to and ran on all Raspberry Pis. The [simpleServer.py](simpleServer.py) should only be added to the main controlling Raspberry Pi (RPi0) while the [simpleclient.py](simpleclient.py) should be put in the secondary Raspberry Pis (RP1 and RP2).
+
+The [cam.py](cam.py) should be added to all Raspberry Pis. The [simpleServer.py](simpleServer.py) and [main_server.py](main_server.py) should only be added to the main controlling Raspberry Pi (RPi0) while the [simpleclient.py](simpleclient.py) and [main_client.py](main_client.py) should be put in the secondary Raspberry Pis (RP1 and RP2). An folder name images should be created in the same directory as the python scripts on each Raspberry Pi.
+
+We must now ssh into RP1 and RP2 from RP0 or another computer. [main_server.py](main_server.py) should now be run on RP0 before running [main_client.py](main_client.py) on RP0. We should now be able to capture images using the pushbutton trigger and see the images captured from RP1 and RP2 appear in the images folder on RP0.

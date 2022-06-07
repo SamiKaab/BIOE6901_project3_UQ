@@ -1,11 +1,3 @@
-__author__ = "Sami Kaab"
-#__copyright__ = ""
-#__credits__ = [""]
-#__license__ = "GPL"
-__version__ = "1.2"
-#__maintainer__ = ""
-__email__ = "sami.kaab@outlook.com"
-__status__ = "In Development"
 
 from pickle import TRUE
 import cv2 as cv
@@ -27,11 +19,11 @@ def init_cam():
 
     #start communication
     #to open specific device, use:
-    cam0.open_device_by_SN('31707351') #('31702051') #()
+    cam0.open_device_by_SN('31702051')#('31707351')#()
     cam0.set_imgdataformat('XI_RGB24')
     cam0.disable_auto_wb()
 
-    cam1.open_device_by_SN('31701451') #('32704451')
+    cam1.open_device_by_SN('32702251')#('31701451') #('32704451')#
     cam1.set_imgdataformat('XI_RGB24')
     cam1.disable_auto_wb()
     #(open by serial number)
@@ -77,3 +69,17 @@ def close_cameras(cam0,cam1):
     #stop communication
     cam0.close_device()
     cam1.close_device()
+
+
+if __name__ == "__main__":
+    cam0,cam1,img0,img1 = init_cam()
+    try:
+        while True:
+            cam0.get_image(img0)
+            cam1.get_image(img1)
+            cv.imshow("Output",img0.get_image_data_numpy())
+            cv.imshow("Output2",img1.get_image_data_numpy())
+            cv.waitKey(1)
+            
+    except:
+        close_cameras(cam0,cam1)
