@@ -6,80 +6,97 @@ import time
 import datetime as dt
 import sys
 import signal                   
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 
 
 
-def init_cam():
+def init_cam(camID):
     #create instance for first connected camera
     
-    cam0 = xiapi.Camera()
-    cam1 = xiapi.Camera()
+    cam = xiapi.Camera()
 
 
     #start communication
     #to open specific device, use:
-    cam0.open_device_by_SN('31702051')#('31707351')#()
-    cam0.set_imgdataformat('XI_RGB24')
-    cam0.disable_auto_wb()
+    cam.open_device_by_SN(camID)#.('31702051')#('31707351')#
+    cam.set_imgdataformat('XI_RGB24')
+    cam.disable_auto_wb()
 
-    cam1.open_device_by_SN('32702251')#('31701451') #('32704451')#
-    cam1.set_imgdataformat('XI_RGB24')
-    cam1.disable_auto_wb()
+    
     #(open by serial number)
     print('Opening first camera...')
     # cam0.open_device()
 
     #settings
-    cam0.set_exposure(10000)
-    cam1.set_exposure(10000)
+    cam.set_exposure(10000)
     # print('Exposure was set to %i us' %cam0.get_exposure())
     #start data acquisition
     print('Starting data acquisition...')
-    cam0.start_acquisition()
-    cam1.start_acquisition()
+    cam.start_acquisition()
     #create instance of Image to store image data and metadata
-    img0 = xiapi.Image()
-    img1 = xiapi.Image()
+    img = xiapi.Image()
 
-    return cam0,cam1,img0,img1
+    return cam,img
 
 
-def save_images(cam0, cam1, img0, img1):
-    cam0.get_image(img0)
-    cam1.get_image(img1)
-    dn = dt.datetime.now()
-    t = dn.time()
-    tformated = str(t.hour) + "-" + str(t.minute) + "-" + str(t.second) + "-" + str(t.microsecond)
-    f = str(dn.date().isoformat())
-    img0_name = str(f) + "_" + str(tformated) + "_RPi3_cam0.png" 
-    img1_name = str(f) + "_" + str(tformated) + "_RPi3_cam1.png" 
-    img0_file_path = "images/" + img0_name
-    img1_file_path = "images/" + img1_name    
-    cv.imwrite(img0_file_path, img0.get_image_data_numpy())
-    cv.imwrite(img1_file_path, img1.get_image_data_numpy())  
-    return [img0_name, img1_name, img0_file_path, img1_file_path]
+def save_images(listCams):
+    imageFileList = []
+    for id,cam,img in listCams:
+        cam.get_image(img)
+        dn = dt.datetime.now()
+        t = dn.time()
+        tformated = str(t.hour) + "-" + str(t.minute) + "-" + str(t.second) + "-" + str(t.microsecond)
+        f = str(dn.date().isoformat())
+        img_name = str(f) + "_" + str(tformated) + "_RPi3_"+str(id)+".png" 
+        img_file_path = "images/" + img_name
+        cv.imwrite(img_file_path, img.get_image_data_numpy())
+        imageFileList.append([img_name, img_file_path])
+    return imageFileList
 
-def close_cameras(cam0,cam1):
-    #stop data acquisition
+def close_cameras(listCams):
     print('Stopping acquisition...')
-    cam0.stop_acquisition()
-    cam1.stop_acquisition()
+    for id, cam,img in listCams:
+        #stop data acquisition
+        cam.stop_acquisition()
 
-    #stop communication
-    cam0.close_device()
-    cam1.close_device()
+        #stop communication
+        cam.close_device()
 
+def init_all_cams(listCamId):
+    listCams = []
+    for id in listCamId:
+        try:
+            cam,img = init_cam(id)
+            listCams.append([id,cam,img])
+        except:
+            print(id+" failed init")
+            continue
+    return listCams
+
+
+def get_frames(listCams):
+    i = 0
+    for camInfo in  listCams:
+        id = camInfo[0]
+        cam = camInfo[1]
+        img = camInfo[2]
+        cam.get_image(img)
+        listCams[i][2] = img
+        i+=1
+        
+        
+    
 
 if __name__ == "__main__":
-    cam0,cam1,img0,img1 = init_cam()
+    listCamId = ['32704451','32702251','31702051','31707351',]
+    listCams = init_all_cams(listCamId)
+
+    
     try:
         while True:
-            cam0.get_image(img0)
-            cam1.get_image(img1)
-            cv.imshow("Output",img0.get_image_data_numpy())
-            cv.imshow("Output2",img1.get_image_data_numpy())
+            get_frames(listCams)
+            cv.imshow(listCamId[0], listCams[0][2].get_image_data_numpy())
             cv.waitKey(1)
-            
+                
     except:
-        close_cameras(cam0,cam1)
+        close_cameras(listCams)
