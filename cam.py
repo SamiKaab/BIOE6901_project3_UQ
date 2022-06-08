@@ -41,14 +41,20 @@ def init_cam(camID):
 
 def save_images(listCams):
     imageFileList = []
-    for id,cam,img in listCams:
+    for camInfo in  listCams:
+        id = camInfo[0]
+        cam = camInfo[1]
+        img = camInfo[2]
         cam.get_image(img)
+        # get date/time info
         dn = dt.datetime.now()
         t = dn.time()
         tformated = str(t.hour) + "-" + str(t.minute) + "-" + str(t.second) + "-" + str(t.microsecond)
         f = str(dn.date().isoformat())
-        img_name = str(f) + "_" + str(tformated) + "_RPi3_"+str(id)+".png" 
+        # set name
+        img_name = str(f) + "_" + str(tformated) + "_RPi3_cam"+str(id)+".png" 
         img_file_path = "images/" + img_name
+        # save image
         cv.imwrite(img_file_path, img.get_image_data_numpy())
         imageFileList.append([img_name, img_file_path])
     return imageFileList
