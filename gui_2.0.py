@@ -47,7 +47,7 @@ class window(Frame):
         self.dist = 0
 
 
-        self.listCamId = ['32704451','32702251','31702051','31707351','31701451']
+        self.listCamId = ['31704551','31707351','31700851','32702251','32704451','31701451']
         self.listCams = cam.init_all_cams(self.listCamId)
 
         # self.laser_thread =_thread.start_new_thread( self.show_laser,())
@@ -98,7 +98,7 @@ class window(Frame):
   
             # use a truetype font
             font = PIL.ImageFont.truetype("fonts/GROT_L.ttf", 100)
-            if self.dist < 700:
+            if self.dist < 300:
                 self.label.config(background='red')
                 
                 # specifying coordinates and colour of text

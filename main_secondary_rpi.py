@@ -9,6 +9,8 @@ __status__ = "In Development"
 
 import cam
 import cv2 as cv
+import simpleServer
+import simpleClient
 import time
 import RPi.GPIO as GPIO
 
@@ -21,8 +23,9 @@ def init_pb():
 
 
 def button_callback(channel):
-    print(listCams)
+
     cam.save_images(listCams)
+    print("image saved")
     
 
   
@@ -30,10 +33,10 @@ def button_callback(channel):
 def main():
     init_pb()
 
-    listCamId = ['32704451','32702251','31702051','31707351','31701451']
+    listCamId = ['32704451','32702251','31702051','31707351',]
     global listCams
     listCams = cam.init_all_cams(listCamId)
-    print(listCams)
+
 
     try:
         while True:

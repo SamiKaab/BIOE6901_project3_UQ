@@ -137,6 +137,6 @@ We should now be able to simultaneously ping RPi1 and RPi2 from RPi0
 
 ## Running the program
 
-The [cam.py](cam.py) should be added to all Raspberry Pis. The [simpleServer.py](simpleServer.py) and [main_server.py](main_server.py) should only be added to the main controlling Raspberry Pi (RPi0) while the [simpleclient.py](simpleclient.py) and [main_client.py](main_client.py) should be put in the secondary Raspberry Pis (RP1 and RP2). An folder name images should be created in the same directory as the python scripts on each Raspberry Pi.
+The [cam.py](cam.py) should be added to all Raspberry Pis. The [gui_2.0.py](gui_2.0.py) and [imageTransfer.py](imageTransfer.py) are only necessary in the main controlling Raspberry Pi (RPi0) while the [main_secondary_rpi.py](main_secondary_rpi.py) is only necessary in the secondary Raspberry Pis (RP1 and RP2). A folder named images should be created in the same directory as the python scripts on each Raspberry Pi.
 
-We must now ssh into RP1 and RP2 from RP0 or another computer. [main_server.py](main_server.py) should now be run on RP0 before running [main_client.py](main_client.py) on RP0. We should now be able to capture images using the pushbutton trigger and see the images captured from RP1 and RP2 appear in the images folder on RP0.
+We must now ssh into RP1 and RP2 from RP0 or from another computer. [gui_2.0.py](main_server.py) should now be run on RP0 and [main_secondary_rpi.py](main_client.py) on RP1 and RP2. We should now be able to capture images using the pushbutton trigger and see the images captured from RP1 and RP2 appear in the images folder on RP0.
