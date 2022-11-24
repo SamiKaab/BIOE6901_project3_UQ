@@ -7,7 +7,6 @@
 
 ## Table of Content
 - [BIOE6901_project3_UQ](#bioe6901_project3_uq)
-  - [Table of Content](#table-of-content)
   - [Required Equipment](#required-equipment)
     - [Optional](#optional)
   - [Setup](#setup)
