@@ -26,7 +26,7 @@
 * Ximea camera (Used in this example, max 6)
 
 ## Setup
-If the Raspberry Pi is connected to an external monitor, connect it the internet via wifi and run 
+If the Raspberry Pi is connected to an external monitor, connect it the internet and run 
 ```sh
 sudo apt update
 sudo apt-get upgrade
@@ -42,7 +42,7 @@ network={
    psk="password"
 }
 ```
-You may have to reboot the Raspberry Pi
+You may have to reboot the Raspberry Pi.<br />
 Once you are connected to the internet run the previously specified command before continuing.
 
 Python should come pre-installed, you can check using the `which python` or `which python3`, which sould return the location of the program (probably `/usr/bin/`). If it is not installed, install it with : `sudo apt-get install python3.8`
@@ -131,7 +131,8 @@ iface br0 inet manual
 bridge_ports eth2 eth1 eth0
 ```
 Finally run `sudo systemctl restart dhcpcd.service` in order for the changes to take effect.
-**Note that  we have to run `sudo brctl addif br0 eth0 eth1 eth2` every time we reboot the Raspberry Pis
+
+**Note that  we have to run `sudo brctl addif br0 eth0 eth1 eth2` every time we reboot the Raspberry Pis**
 
 We should now be able to simultaneously ping RPi1 and RPi2 from RPi0
 

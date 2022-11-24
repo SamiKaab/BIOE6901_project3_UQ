@@ -9,23 +9,16 @@ import signal
 # import RPi.GPIO as GPIO
 
 
-
+## Initialise camera by ID and return a camera and image instance ##
 def init_cam(camID):
-    #create instance for first connected camera
-    
+
+    #(open by serial number)
     cam = xiapi.Camera()
-
-
-    #start communication
-    #to open specific device, use:
-    cam.open_device_by_SN(camID)#.('31702051')#('31707351')#
+    cam.open_device_by_SN(camID)
     cam.set_imgdataformat('XI_RGB24')
     cam.disable_auto_wb()
 
-    
-    #(open by serial number)
     print('Opening first camera...')
-    # cam0.open_device()
 
     #settings
     cam.set_exposure(10000)
@@ -38,7 +31,7 @@ def init_cam(camID):
 
     return cam,img
 
-
+## save the current frame of the corresponding camera and return list file paths and file names
 def save_images(listCams):
     imageFileList = []
     for camInfo in  listCams:
@@ -59,6 +52,7 @@ def save_images(listCams):
         imageFileList.append([img_name, img_file_path])
     return imageFileList
 
+
 def close_cameras(listCams):
     print('Stopping acquisition...')
     for id, cam,img in listCams:
@@ -68,6 +62,7 @@ def close_cameras(listCams):
         #stop communication
         cam.close_device()
 
+## Initialise all cameras and return list of camera id, camera instance and image instance in list 
 def init_all_cams(listCamId):
     listCams = []
     for id in listCamId:
@@ -79,16 +74,17 @@ def init_all_cams(listCamId):
             continue
     return listCams
 
-
+## Replace images in the camera list with the current captured frame of the corresponding camera
 def get_frames(listCams):
-    i = 0
-    for camInfo in  listCams:
+    for i,camInfo in  enumerate(listCams):
         id = camInfo[0]
+        # get camera instance
         cam = camInfo[1]
+        # get image instance
         img = camInfo[2]
+        # replace old image instance with current camera frame 
         cam.get_image(img)
         listCams[i][2] = img
-        i+=1
         
         
     
@@ -97,12 +93,11 @@ if __name__ == "__main__":
     listCamId = ['32704451','32702251','31702051','31707351',]
     listCams = init_all_cams(listCamId)
 
-    
     try:
         while True:
             get_frames(listCams)
             cv.imshow(listCamId[0], listCams[0][2].get_image_data_numpy())
-            cv.waitKey(1)
+            cv.waitKey(1) # Wait for 1 millisecond
                 
     except:
         close_cameras(listCams)
